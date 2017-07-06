@@ -1,0 +1,211 @@
+{{define "Title"}}我的社区{{end}}
+{{define "Header"}}
+{{end}}
+{{define "Content"}}
+	
+    <div class="mb10"></div>
+    <div class="ind-topqstion" id="questionpage">
+    	<div class="prncon clearfix" id="statistics">
+            <ul class="clearfix mb15">
+                <li class="clearfix">
+                    <a href="#" class="pull-left mr30" style="overflow:hidden;width:100px;">
+                        <img alt="" class="user-photo" data-bind="attr:{src:PhotoStr}">
+                    </a><div class="media-body media-body-ext">
+                        
+                        <h4 class="text-primary mb20 mr20" style="display:inline-block" data-bind="">{{.displayname}}</h4><h4 class="total-points"><span class=" mr10" lang="Total points"></span><span id="totalpoints" class="blink"></span></h4>
+                        <ul class="qus-num qs-num-ext">
+                            <li><a data-bind="css:CSSByNum(FavoriteCount)"><span data-bind="text:FavoriteCount.Currency()"></span><h5 lang="MyFavorite">
+							Favorite</h5></a></li>
+                            <li><a data-bind="css:CSSByNum(VotedCount)"><span data-bind="text:VotedCount.Currency()"></span><h5 lang="MyVote">
+							Vote</h5></a></li>
+                            <li><a data-bind="css:CSSByNum(BestCount)"><span data-bind="text:BestCount.Currency()"></span><h5 lang="MyBest">
+							Best</h5></a></li>
+							<li><a data-bind="css:CSSByNum(ExpertCount)"><span data-bind="text:ExpertCount.Currency()"></span><h5 lang="MyExpert">
+							Expert</h5></a></li>
+                            <li><a data-bind="css:CSSByNum(TagsCount)"><span data-bind="text:TagsCount.Currency()"></span><h5 lang="MyTag">
+							Tags</h5></a></li>
+                            <li><a data-bind="css:CSSByNum(ViewCount)"><span data-bind="text:ViewCount.Currency()"></span><h5 lang="MyView">
+							View</h5></a></li>
+							<li><a data-bind="css:CSSByNum(BadgesCount)"><span data-bind="text:BadgesCount.Currency()"></span><h5 lang="Badges">
+							Badges</h5></a></li>
+
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+		<!--
+        <div class="my_action">
+            <table style="width:100%;text-align:center;">
+        		<tr>
+        			<td>
+        				<span><img src="/static/images/index/send_icon.png"/></span>
+        				<span><a onclick="showSendMessage();" lang="Send Notice">
+						Send Notice</a></span>
+        				<span><a href="MyMessages.aspx" target="_blank" lang="My messages">
+						My messages</a></span>
+        				<span><a href="MyReceivedNotice.aspx" target="_blank" lang="My Received Notice">
+						My Received Notice</a></span>
+        			</td>
+        			<td>
+        				<span><img src="/static/images/index/medal_icon.png"/></span>
+        				<span><a href="AssignBadge.aspx" target="_blank" lang="Send Badge">
+						Send Badge</a></span>
+        				<span><a href="MyAssigned.aspx" target="_blank" lang="My Assigned Badges Record">
+						My Assigned Badges Record</a></span>
+        				<span><a href="MyReceived.aspx" target="_blank" lang="My Accepted Badges">
+						My Accepted Badges</a></span>
+        			</td>
+        		</tr>
+        	</table>
+        </div>
+		-->
+    	<h3 class="lislef-tit lisschtit mb0"></h3>
+        <ul class="nav nav-tabs">
+            <!-- Nav tabs begin-->
+            <li class="active" onclick="SwitchTab('followed')" id="followed"><a><strong lang="MyFavorite">
+			Favorite</strong></a></li>
+            <li onclick="SwitchTab('vote')" id="vote"><a><strong lang="MyVote">
+			Vote</strong></a></li>
+            <li onclick="SwitchTab('tags')" id="tags"><a><strong lang="MyTag">
+			Tag</strong></a></li>
+            <li onclick="SwitchTab('favanswer')" id="favanswer"><a><strong lang="MyFavoriteAnswer">
+			Favorite Answer</strong></a></li>
+            <li onclick="SwitchTab('myques')" id="myques"><a><strong lang="MyQuestion">
+			My Question</strong></a></li>
+            <li onclick="SwitchTab('myjoined')" id="myjoined"><a><strong lang="MyJoin">
+			My Joined</strong></a></li>
+            <li onclick="SwitchTab('myfollow')" id="myfollow"><a><strong lang="MyFollowedpeople">
+			My Followed People</strong></a></li>
+        </ul>
+
+        <div class="tab-content mb30">
+            <!-- Tab pane1 begin-->
+            <div class="tab-pane active" id="con_followed">
+                <div data-bind="template: 'qcontentwithremovebtn'"></div>
+                <div data-bind="template: 'tplPagging'"></div>
+            </div>
+            <!-- Tab pane1 end-->
+            <div class="tab-pane" id="con_vote">
+                <div data-bind="template: 'qconwithanswer'"></div>
+                <div data-bind="template: 'tplPagging'"></div>
+            </div>
+            <!-- Tab pane2 end-->
+            <div class="tab-pane" id="con_tags">
+            	<div class="lab-lis lab-lis-ext" >
+	                <ul class="lab-lisul clearfix" data-bind="foreach: items">
+		                <li>
+		                    <span>
+		                    	<a class="btn btn-default btn-xs label-width" data-bind="attr: { href: '/tags/tagquestion?title=' + encodeURIComponent(TagName),target:'_blank',title:TagName }, text: TagName"></a>
+		                    </span>
+		                    
+		                    	<span class="sp2 h6 txtr" data-bind="attr:{title:dict['Count of Question']}">
+		                        	<a data-bind="text: TagCounts"></a>
+		                    </span>
+		                    <span class="sp3">
+		                    	<button type="button" class="btn btn-primary btn-sm" data-bind="click: Tags.RemoveFavoriteTag.bind($data, FavoriteTagId, $parent),attr:{title:dict['CancelFollow']}">
+								-</button>
+		                    </span>
+		                </li>
+		            </ul>
+		            <!-- ko if: items().length == 0 -->
+	                <div data-bind="if: items().length == 0" class="noneDataTip" lang="None Data"></div>
+	                <!--/ko-->
+				</div>
+				<div data-bind="template: 'tplPagging'"></div>
+                
+            </div>
+            <!-- Tab pane3 end-->
+            <div class="tab-pane" id="con_favanswer">
+                <div data-bind="template: 'qanswerwithremovebtn'"></div>
+                <div data-bind="template: 'tplPagging'"></div>
+            </div>
+            <div class="tab-pane" id="con_myques">
+                <div data-bind="template: 'qcontent'"></div>
+                <div data-bind="template: 'tplPagging'"></div>
+
+            </div>
+
+            <div class="tab-pane" id="con_myjoined">
+                <div data-bind="template: 'qcontent'"></div>
+                <div data-bind="template: 'tplPagging'"></div>
+
+            </div>
+
+            <div class="tab-pane" id="con_myfollow">
+                <div data-bind="template: 'qcontent'"></div>
+                <div data-bind="template: 'tplPagging'"></div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/static/js/cowork.community.questions.js" type="text/javascript"></script>
+    <script src="/static/js/cowork.community.answers.js" type="text/javascript"></script>
+    <script src="/static/js/cowork.community.users.js" type="text/javascript"></script>
+    <script src="/static/js/paginationViewModel.js" type="text/javascript"></script>
+    <script src="/static/js/cowork.community.miscellaneous.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+        	$(".mypersonalactive").addClass("active").css("background","#6abf4a");
+			
+            Questions.getFavoriteQuesPage("con_followed");
+            Answers.GetQuesByVoteAnswer("con_vote");
+            Tags.getFollowedTagsPage("con_tags");
+            Answers.GetQuesByFavAnswer("con_favanswer");
+            Questions.getQuesForMyPage("con_myques", "my");
+            Questions.getQuesForMyPage("con_myjoined", "join");
+            Questions.getQuesForMyPage("con_myfollow", "follow");
+			
+			Users.GetStatisticsInfo("statistics");
+			//Users.GetPoints("totalpoints");
+            var searchType = GetRequestPara("stype");
+            if (searchType != null && searchType != "") {
+                SwitchTab(searchType);
+            }
+			
+			Tags.GetTagsPage("hottags",20);
+            Miscellaneous.getFixedCount(bindFixedCount);
+        });
+    </script>
+{{end}}
+
+{{define "RightTop"}}
+	<div class="rigp scch mb20">
+        <p class="mc tc mb20">
+            <span lang="Questions already fixed">Questions already fixed </span>
+            <br />
+            <span class="h1 hc tc" id="fixedQuestionCount"></span>
+        </p>
+        <div class="searchq form-group">
+            <ul class="tag-list clearfix mb0">
+                <li>
+                    <input type="text" id="searchBox" class="form-control sword" placeholder="Search questions..." onkeypress="goToSearchResult(this);" />
+                    <img class="srchimg" src="/static/images/index/search.png" onclick="onSearch(document.getElementById('searchBox'));" />
+                </li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            $("#searchBox").attr("placeholder", dict["PromptInput"]);
+        </script>
+
+        <button type="button" class="btn btn-success btn-block mb20" onclick="window.location.href='/question/add';"><span class="mc" lang="I want to ask">I want to ask</span></button>
+    </div>
+{{end}}
+
+{{define "RightSide"}}
+	<div class="rigp ind-tags mb20" id="hottags">
+        <h4 class="clearfix"><a data-bind="attr: { href: '/tags' }" lang="Tags">Tags</a></h4>
+        <ul class="tag-list clearfix" data-bind="foreach: items">
+            <li>
+                <a data-bind="attr: { href: '/tags/tagquestion?title=' + encodeURIComponent(TagName())}, text: TagName"></a>
+            </li>
+
+            <!--ko if:$index() == $root.items().length-1 -->
+            <li data-bind="if: $index() == $root.items().length-1"><a class="a1" data-bind="text: dict['Show More'], attr: { href: '/tags' }"></a></li>
+			<!--/ko-->
+        </ul>
+    </div>
+    <!--The latest end-->
+{{end}}

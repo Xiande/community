@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="keywords" content="Coder, Coder社区, Coder 社区" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{template "Title" .}} - RRCommunity</title>
+	<script type="text/javascript" src="/static/js/jquery.js"></script>
+        <script type="text/javascript" src="/static/js/json2.js"></script>
+        <script type="text/javascript" src="/static/js/config.js"></script>
+        <script type="text/javascript" src="/static/js/common.js"></script>
+        <script type="text/javascript" src="/static/js/langtranslate.js"></script>
+        <script type="text/javascript" src="/static/js/knockout-3.1.0.debug.js"></script>
+        <script type="text/javascript" src="/static/js/knockout.mapping-latest.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.inputMaxlen.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.autocomplete.js"></script>
+        <script src="/static/js/paginationViewModel.js" type="text/javascript"></script>
+
+        <!--script type="text/javascript" src="js/cowork.community.miscellaneous.js"></script-->
+        <link type="text/css" href="/static/css/core.css" rel="stylesheet" />
+
+
+        <link href="/static/css/style.default.css" rel="stylesheet">
+        <link href="/static/css/jquery.datatables.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+		    <script src="js/html5shiv.js"></script>
+		    <script src="js/respond.min.js"></script>
+	    <![endif]-->
+        <script src="/static/js/jquery.jplaceholder.js"></script>
+        <script>
+            translate();
+        </script>
+</head>
+<body>
+	<div id="s4-bodyContainer">
+
+                    <div id="preloader">
+                        <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
+                    </div>
+
+                    <section class="bootstrap-content">
+                        <div class="headerbar s4-notdlg">
+                            <!--header begin-->
+                            <div class="headerbar-con">
+                                <div class="header-left">
+                                    <!--header left begin-->
+                                    <div class="logopanel" style="width:290px;">
+                                        <!-- logopanel begin-->
+                                        <a href="/">Coder &nbsp;&nbsp;Community </a>
+                                    </div>
+                                    <!-- logopanel end-->
+                                    <div class="topnav">
+                                        <!-- top menu begin-->
+                                        <ul class="nav nav-horizontal">
+                                            <li class="homeactive"><a href="/"><span lang="Home">Home</span></a></li>
+                                            <!--<li class="mypersonalactive"><a href="/mypersonal"><span lang="My Community">My Community</span></a></li>-->
+                                            <li class="last">
+											{{if .username}}
+                                                <ul class="headermenu topnav">
+                                                    <li class="mypersonalactive">
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                <span lang="My Community">My Community</span>
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                                                                <li><a href="/mypersonal?stype=myques"><i class="glyphicon"></i><span lang="My Questions">My Questions</span></a></li>
+                                                                <li><a href="/mypersonal?stype=followed"><i class="glyphicon"></i><span lang="My Favorite Questions">My Favorite Questions</span></a></li>
+                                                                <li><a href="/mypersonal?stype=favanswer"><i class="glyphicon"></i><span lang="My Favorite Answers">My Favorite Answers</span></a></li>
+                                                                <li><a href="/mypersonal?stype=tags"><i class="glyphicon"></i><span lang="My Tags">My Tags</span></a></li>
+                                                                <li><a href="/mypersonal?stype=vote"><i class="glyphicon"></i><span lang="My Voted">My Voted</span></a></li>
+                                                                <li><a href="/mypersonal?stype=myjoined"><i class="glyphicon"></i><span lang="My Joined Questions">My Joined Questions</span></a></li>
+                                                                <li><a href="/mypersonal?stype=myfollow"><i class="glyphicon"></i><span lang="My Followed User">My Followed Users Questions</span></a></li>
+
+                                                            </ul>
+                                                        </div>
+
+                                                    </li>
+                                                <!--
+													<li>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                <span lang="Transaction">Transaction</span>
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                                                                <li><a href="javascript:void(0)" onclick="redirectToTransaction();"><i class="glyphicon"></i><span lang="Ask Transaction">Ask Transaction</span></a></li>
+                                                                <li><a id="searchlenovohelp" href="#"><i class="glyphicon"></i><span lang="Search Transaction">Search Transaction</span></a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                <span lang="Acronyms">Acronyms</span>
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                                                                <li><a href="javascript:void(0)" onclick="redirectToAcronyms();"><i class="glyphicon"></i><span lang="Ask Acronyms">Ask Acronyms</span></a></li>
+                                                                <li><a id="searchglossary" href="#"><i class="glyphicon"></i><span lang="Search Acronyms">Search Acronyms</span></a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                <span lang="Cowork Related">Cowork</span>
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                                                                <li><a href="#" id="coworkindex"><i class="glyphicon"></i><span lang="Cowork homepage"></span></a></li>
+                                                                <li><a href="#" id="applypage"><i class="glyphicon"></i><span lang="Apply for sites"></span></a></li>
+                                                                <li><a href="#" id="sitefaq"><i class="glyphicon"></i><span lang="Sit Using FAQ"></span></a></li>
+                                                                <li><a href="#" id="helpcenter"><i class="glyphicon"></i><span lang="Cowork help center"></span></a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+												-->
+                                                </ul>
+											{{end}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!--top menu end -->
+                                </div>
+                                <!-- header left end-->
+                                <div class="header-right ">
+                                    <!-- header right begin-->
+                                    <ul class="headermenu">
+                                        <li>
+										{{if .username}}
+                                            <!--person info begin-->
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                    <img src="{{.photoImgSrc}}" alt="" style="margin-right:1px;"/>
+                                                    <span id="curusername">{{.displayname}}</span>
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                                                    <li>
+                                                        <a href="/signout" >
+                                                            <i class="glyphicon"></i><span lang="Log on as a different user">Log on as a different user</span>
+                                                        </a>
+                                                    </li>
+                                                    <li><span class="menu-item-split"></span></li>
+                                                    <li><a href="/badge/assign"><i class="glyphicon"></i><span lang="Send Badge">Send Badge</span></a></li>
+                                                    <li><a href="/badge/myassigned"><i class="glyphicon"></i><span lang="My Assigned Badges Record">My Assigned Badges</span></a></li>
+                                                    <li><a href="/badge/myreceived"><i class="glyphicon"></i><span lang="My Accepted Badges">My Accepted Badges</span></a></li>
+                                                    <li><span class="menu-item-split"></span></li>
+                                                    <li><a href="javascript:void(0)" onclick="window.location='/informrecord/add?source=' + window.location;"><i class="glyphicon"></i><span lang="Inform">Inform</span></a></li>
+                                                    <li><a href="/informrecord/my"><i class="glyphicon"></i><span lang="My Inform Record">My Inform Record</span></a></li>
+
+                                                </ul>
+                                            </div>
+										{{else}}
+											<a href="/signin">登录</a> <span class="divider">|</span>
+											<a href="/signup">注册</a>
+										{{end}}
+                                        </li>
+                                        <!--person info end-->
+                                        
+										{{if .isSuperUser}}
+	                                        <li class="needAdmin">
+	                                            <!--operation info begin-->
+	                                            <div id="sysOperation" class="btn-group">
+	                                                <button type="button" class="btn btn-default dropdown-toggle tp-icon" data-toggle="dropdown">
+	                                                    <i class="glyphicon glyphicon-cog"></i>
+	                                                </button>
+	                                                <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+	                                                    <li class="needAdmin"><a href="javascript:void(0)" onclick="window.location.href = CCConfig.L_Menu_BaseUrl + '/_layouts/15/settings.aspx';"><i class="glyphicon"></i><span lang="Site Settings">Site Settings</span></a></li>
+	                                                    <li class="needAdmin"><a href="javascript:void(0)" onclick="window.location.href = CCConfig.L_Menu_BaseUrl + '/_layouts/15/people.aspx?MembershipGroupId=' + CCConfig.ModeratorGroupID;"><i class="glyphicon"></i><span lang="Moderator Settings">Moderator Settings</span></a></li>
+														<li class="needAdmin"><a href="javascript:void(0)" onclick="window.location.href = CCConfig.L_Menu_BaseUrl + '/_layouts/15/people.aspx?MembershipGroupId=' + CCConfig.AdministratorGroupID;"><i class="glyphicon"></i><span lang="Administrator Settings">Administrator Settings</span></a></li>
+														<li class="needAdmin"><a href="javascript:void(0)" onclick="window.location.href = CCConfig.L_Menu_BaseUrl + '/StarUsers'"><i class="glyphicon"></i><span lang="Star User Settings">Star User Settings</span></a></li>
+														<li><span class="menu-item-split"></span></li>
+	
+														<li class="needAdmin"><a href="javascript:void(0)" onclick="window.location.href = CCConfig.L_Menu_BaseUrl + '/Lists/Badges';"><i class="glyphicon"></i><span lang="Badge Settings">Badge Settings</span></a></li>
+	                                                    <li class="needAdmin"><a href="javascript:void(0)" onclick="window.location.href = CCConfig.L_Menu_BaseUrl + '/BadgeImages';"><i class="glyphicon"></i><span lang="Badge Image Settings">Badge Image Settings</span></a></li>
+	                                                    <li class="needAdmin"><a href="SearchBadges.aspx"><i class="glyphicon"></i><span lang="Search Badges">Search Badges</span></a></li>
+	                                                    <li class="needAdmin"><a href="StatisticBadges.aspx"><i class="glyphicon"></i><span lang="Statistic Badges">Statistic Badges</span></a></li>
+	                                                    <li><span class="menu-item-split"></span></li>
+	
+														<li class="needAdmin"><a href="javascript:void(0)" onclick="window.location.href = 'PointRulesConfig.aspx?source=' + window.location.href;"><i class="glyphicon"></i><span lang="Point Rules">Point Rules</span></a></li>
+														<li class="needAdmin"><a href="SearchPointLogs.aspx"><i class="glyphicon"></i><span lang="Point Logs">Point Logs</span></a></li>
+														<li><span class="menu-item-split"></span></li>
+														<li class="needAdmin"><a href="informrecordlist.aspx"><i class="glyphicon"></i><span lang="Inform Record List">Inform Record List</span></a></li>
+														
+	
+	                                                    
+	                                                </ul>
+	                                            </div>
+	                                        </li>
+										{{end}}
+                                        <li>
+                                        	<!--style="position:absolute; line-height:25px;;right: 25px; top: 0px; text-align: center;background:#000;z-index:999;width:50px;height:50px" -->
+                                        			<div class="tp-icon" style="padding:0px;width:50px;font-size:14px;line-height:25px;text-align:center;">
+			                                    <a onclick="changeLanguage('zh-cn')" style="display: block; cursor: pointer; color: #fff;">中文</a>
+			                                    <a onclick="changeLanguage('en')" style="display: block; cursor: pointer; color: #fff;">English</a>
+			                                </div>
+                                        </li>
+                                    </ul>                                    
+                                </div>
+                                
+                                <!-- header right end-->
+                            </div>
+                        </div>
+                        <!--header end-->
+
+                        <div class="pageheader s4-notdlg">
+                            {{template "Header" .}}
+                            <!--top image search begin-->
+
+                        </div>
+                        <!--top image search end-->
+
+                        <div id="content-container" class="index-con mc">
+                            <div class="ind-lef">
+                                {{template "Content" .}}
+                            </div>
+                            <div class="ind-rig s4-notdlg">
+								{{template "RightTop" .}}
+								{{template "RightSide" .}}
+								
+                            </div>
+                            <!-- row -->
+                        </div>
+                        <!-- contentpanel -->
+                    </section>
+                    <section>
+                        <asp:ContentPlaceHolder ID="PlaceHolderJSTemplate" runat="server">
+							<script type="text/html" id="tplPagging">
+                                <ul class="pagination" data-bind="visible: items().length > 0">
+                                    <li><a data-bind="click: goToFirst, text: dict['First']"></a></li>
+                                    <li><a data-bind="click: goToPrev"><<</a></li>
+                                    <!--ko if:showStartPagerDot-->
+                                    <li><a>...</a></li>
+                                    <!--/ko-->
+                                    <!--ko foreach:pages-->
+                                    <li data-bind="css: { 'active': $data == $parent.currentPage() }">
+                                        <a data-bind="text: $data, click: $parent.goToPage.bind($data, $data)"></a>
+                                    </li>
+                                    <!--/ko-->
+                                    <!--ko if:showEndPagerDot-->
+                                    <li><a>...</a></li>
+                                    <!--/ko-->
+                                    <li><a data-bind="click: goToNext">>></a></li>
+                                    <li><a data-bind="click: goToLast, text: dict['Last']"></a></li>
+                                </ul>
+                            </script>
+                            <script type="text/html" id="qcontent">
+                                <ul class="tab-list clearfix" data-bind="foreach: items">
+                                    <li class="clearfix">
+                                        <!--begin-->
+                                        <ul class="qus-num">
+                                            <li><a data-bind="css: CSSByNum(VotedCount)"><span data-bind="    text: VotedCount == null ? 0 : VotedCount.ConvertCount()"></span>
+                                                <h5 data-bind="text: GetPlural('vote', VotedCount)"></h5>
+                                            </a></li>
+                                            <li><a data-bind="css: CSSByNum(ViewedCount)"><span data-bind="    text: ViewedCount == null ? 0 : ViewedCount.ConvertCount()"></span>
+                                                <h5 data-bind="text: GetPlural('view', ViewedCount)">view</h5>
+                                            </a></li>
+                                            <li class="block"><a data-bind="css: CSSByNum(AnswersCount)"><span data-bind="    text: AnswersCount == null ? 0 : AnswersCount.ConvertCount()"></span>
+                                                <h5 data-bind="text: GetPlural('answer', AnswersCount)"></h5>
+                                            </a></li>
+                                        </ul>
+                                        <div class="tab-lis-rig">
+                                            <div class="tablis-inf1">
+                                                <a data-bind="attr: { href: '/question/' + Id}">
+                                                    <h5 class="q-title" data-bind="text: Title, attr: { title: Title }"></h5>
+                                                </a>
+                                                <ul class="tag-list clearfix" data-bind="foreach: Tags.trimStr(',').split(',')">
+                                                    <li>
+                                                        <a data-bind="text: $data, attr: { href: '/tags/tagquestion?title=' + encodeURIComponent($data) }"></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tablis-inf2">
+                                                <span class="mr5" data-bind="text: CreateDate.TransDate()"></span>
+                                                <span class="up-container" data-bind="attr: { username: UserName, aname: DisplayName, aemail: UserName + '@xxx.com', photoImgSrc: PhotoImgSrc + '?imageView2/2/w/30/h/30'}"></span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <!-- ko if: items().length == 0 -->
+                                <div class="noneDataTip" data-bind="text: dict['None Data']"></div>
+                                <!--/ko-->
+                            </script>
+                            <script type="text/html" id="qconwithanswer">
+                                <ul class="tab-list clearfix" data-bind="foreach: items">
+                                    <li class="clearfix">
+                                        <!--begin-->
+                                        <ul class="qus-num">
+                                            <li><a data-bind="css: CSSByNum(VotedCount)"><span data-bind="    text: VotedCount == null ? 0 : VotedCount.ConvertCount()"></span>
+                                                <h5 data-bind="text: GetPlural('vote', VotedCount)">votes</h5>
+                                            </a></li>
+                                            <li><a data-bind="css: CSSByNum(ViewedCount)"><span data-bind="    text: ViewedCount == null ? 0 : ViewedCount.ConvertCount()"></span>
+                                                <h5 data-bind="text: GetPlural('view', ViewedCount)">view</h5>
+                                            </a></li>
+                                            <li class="block"><a data-bind="css: CSSByNum(AnswersCount)"><span data-bind="    text: AnswersCount == null ? 0 : AnswersCount.ConvertCount()"></span>
+                                                <h5 data-bind="text: GetPlural('answer', AnswersCount)"></h5>
+                                            </a></li>
+                                        </ul>
+                                        <div class="tab-lis-rig">
+                                            <div class="tablis-inf1">
+                                                <a data-bind="attr: { href: '/question/' + Id + '?aid=' + FavoriteAnswerId }">
+                                                    <h5 class="q-title" data-bind="text: Title, attr: { title: Title }"></h5>
+                                                </a>
+                                                <ul class="tag-list clearfix" data-bind="foreach: Tags.trimStr(',').split(',')">
+                                                    <li>
+                                                        <a data-bind="text: $data, attr: { href: '/tags/tagquestion?title=' + encodeURIComponent($data)}"></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tablis-inf2">
+                                                <span class="mr5" data-bind="text: CreateDate.TransDate()"></span>
+                                                <span class="up-container" data-bind="attr: { username: UserName, aname: DisplayName, aemail: UserName + '@xxx.com', photoImgSrc: PhotoImgSrc + '?imageView2/2/w/30/h/30' }"></span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <!-- ko if: items().length == 0 -->
+                                <div class="noneDataTip" data-bind="text: dict['None Data']"></div>
+                                <!--/ko-->
+                            </script>
+                            <script type="text/html" id="qcontentwithremovebtn">
+                                <ul class="tab-list clearfix" data-bind="foreach: items">
+                                    <li class="clearfix">
+                                        <!--begin-->
+                                        <ul class="qus-num">
+                                            <li><a data-bind="css: CSSByNum(VotedCount)"><span data-bind="    text: VotedCount == null ? 0 : VotedCount.ConvertCount()"></span>
+                                                <h5 data-bind="text: GetPlural('vote', VotedCount)">votes</h5>
+                                            </a></li>
+                                            <li><a data-bind="css: CSSByNum(ViewedCount)"><span data-bind="    text: ViewedCount == null ? 0 : ViewedCount.ConvertCount()"></span>
+                                                <h5 data-bind="text: GetPlural('view', ViewedCount)">view</h5>
+                                            </a></li>
+                                            <li class="block"><a data-bind="css: CSSByNum(AnswersCount)"><span data-bind="    text: AnswersCount == null ? 0 : AnswersCount.ConvertCount()"></span>
+                                                <h5 data-bind="text: GetPlural('answer', AnswersCount)"></h5>
+                                            </a></li>
+                                        </ul>
+                                        <div class="tab-lis-rig">
+                                            <div class="tablis-inf1">
+                                                <a data-bind="attr: { href: '/question/' + Id }">
+                                                    <h5 class="q-title" style="display:inline" data-bind="text: Title, attr: { title: Title }"></h5>
+                                                </a>
+												<button type="button" class="btn btn-primary btn-sm btnFollow mr10" data-bind="attr: { title: dict['CancelFollow'] }, click: Miscellaneous.StopFollowing.bind($data, 'question', FavoriteQuestionId, $parent)">-</button>
+                                                <ul class="tag-list clearfix" data-bind="foreach: Tags.trimStr(',').split(',')">
+                                                    <li>
+                                                        <a data-bind="text: $data, attr: { href: '/tags/tagquestion?title=' + encodeURIComponent($data)}"></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tablis-inf2">
+                                                <span class="mr5" data-bind="text: CreateDate.TransDate()"></span>
+                                                <span class="up-container mr5" data-bind="attr: { username: UserName, aname: DisplayName, aemail: UserName + '@xxx.com', photoImgSrc: PhotoImgSrc + '?imageView2/2/w/30/h/30' }"></span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <!-- ko if: items().length == 0 -->
+                                <div class="noneDataTip" data-bind="text: dict['None Data']"></div>
+                                <!--/ko-->
+                            </script>
+                            <script type="text/html" id="qanswerwithremovebtn">
+                                <ul class="tab-list clearfix" data-bind="foreach: items">
+                                    <li class="clearfix">
+                                        <!--begin-->
+                                        <ul class="qus-num">
+                                            <li><a data-bind="css: CSSByNum(VotedCount)"><span data-bind="    text: VotedCount == null ? 0 : VotedCount.ConvertCount()"></span>
+                                                <h5 data-bind="text: GetPlural('vote', VotedCount)">votes</h5>
+                                            </a></li>
+                                            <li><a data-bind="css: CSSByNum(ViewedCount)"><span data-bind="    text: ViewedCount == null ? 0 : ViewedCount.ConvertCount()"></span>
+                                                <h5 data-bind="text: GetPlural('view', ViewedCount)">view</h5>
+                                            </a></li>
+                                            <li class="block"><a data-bind="css: CSSByNum(AnswersCount)"><span data-bind="    text: AnswersCount == null ? 0 : AnswersCount.ConvertCount()"></span>
+                                                <h5 data-bind="text: GetPlural('answer', AnswersCount)"></h5>
+                                            </a></li>
+                                        </ul>
+                                        <div class="tab-lis-rig">
+                                            <div class="tablis-inf1">
+                                                <a data-bind="attr: { href: '/question/' + Id + '?aid=' + AnswerId }">
+                                                    <h5 class="q-title" style="display:inline" data-bind="text: Title, attr: { title: Title }"></h5>
+                                                </a>
+												<button type="button" class="btn btn-primary btn-sm btnFollow mr10" data-bind="attr: { title: dict['CancelFollow'] }, click: Miscellaneous.StopFollowing.bind($data, 'answer', FavoriteAnswerId, $parent)">-</button>
+                                            	
+                                                <ul class="tag-list clearfix" data-bind="foreach: Tags.trimStr(',').split(',')">
+                                                    <li>
+                                                        <a data-bind="text: $data, attr: { href: '/tags/tagquestion?title=' + encodeURIComponent($data)}"></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tablis-inf2">
+                                                <span class="mr5" data-bind="text: CreateDate.replace('T', ' ').replace('Z',''"></span>
+                                                <span class="up-container mr5" data-bind="attr: { username: UserName, aname: DisplayName, aemail: UserName + '@xxx.com', photoImgSrc: PhotoImgSrc + '?imageView2/2/w/30/h/30' }"></span>
+											</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <!-- ko if: items().length == 0 -->
+                                <div class="noneDataTip" data-bind="text: dict['None Data']"></div>
+                                <!--/ko-->
+                            </script>
+                        </asp:ContentPlaceHolder>
+
+
+                        <script src="/static/js/jquery-1.10.2.min.js"></script>
+                        <script src="/static/js/jquery-migrate-1.2.1.min.js"></script>
+                        <script src="/static/js/bootstrap.min.js"></script>
+                        <script src="/static/js/modernizr.min.js"></script>
+                        <script src="/static/js/jquery.sparkline.min.js"></script>
+                        <script src="/static/js/toggles.min.js"></script>
+                        <script src="/static/js/retina.min.js"></script>
+                        <script src="/static/js/jquery.cookies.js"></script>
+
+                        <script src="/static/js/custom.js"></script>
+                        <script src="/static/js/cowork.community.tags.js" type="text/javascript"></script>
+                        <script>
+                            translate();
+                            function redirectToAcronyms() {
+                                var url = '/glossary/add?isdlg=1&lang=' + CCConfig.SiteLanguage;
+                                if (window.showModalDialog) {
+                                    window.showModalDialog(url, "", "dialogWidth=510px;dialogHeight=510px;");
+                                }
+                                else {
+                                    window.open(url, "newwindow", "width=510,height=510,top=150,left=300,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no");
+                                }
+                            }
+                            
+                            function redirectToTransaction() {
+                                var url = '/transaction/add?isdlg=1&lang=' + CCConfig.SiteLanguage;
+                                if (window.showModalDialog) {
+                                    window.showModalDialog(url, "", "dialogWidth=510px;dialogHeight=590px;");
+                                }
+                                else {
+                                    window.open(url, "newwindow", "width=510,height=633,top=35,left=300,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no,z-look=yes");
+                                }
+                            }
+                            $(function () {
+                                //Tags.GetTagsPage("hottags", 30);
+                                BindMenuLink();
+                            });
+
+                        </script>
+                </div>
+                <div id="loading" style="display: none;">
+                    <div id="waitingCover" class="waitingCover">
+                    </div>
+                    <div style="" class="waiting">
+                        <img src="/static/images/loaders/loader2.gif" alt="" style="vertical-align: middle;" />
+                        <span lang="Please Waiting"></span>
+                    </div>
+                </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+﻿#sideNavBox,s4-titlerow{
+
+    display:none;
+}
+#contentBox{
+		margin-left:20px;
+}
+#question-content{
+    min-height:200px;
+}
+.answer-item{
+    min-height:100px;
+    margin-bottom:10px;
+}
+.question-item-container,.answer-item-container{
+    border:1px solid #000;
+    margin-bottom:10px;
+}
+
+#answers-container{
+    margin-top:20px;
+}
+
+.shareDlg .ui-dialog-title{
+    margin:0;
+
+}
+.shareDlg .ui-dialog-titlebar,.shareDlg .ui-dialog-content{
+    padding-left:0;
+}

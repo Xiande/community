@@ -1,0 +1,217 @@
+{{define "Title"}}提问{{end}}
+{{define "Header"}}
+{{end}}
+{{define "Content"}}
+	<script type="text/javascript" src="/static/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="/static/ckeditor/adapters/jquery.js"></script>
+
+	<div id="main-panel" class="question-container">
+		
+        <h3 class=" lislef-tit mb0" lang="Ask Question Details">Ask Question 
+		Details</h3>
+        <div class="dtl" id="question-container" style="padding-top: 0px;">
+            <!-- ko if:IsAdmin -->
+            <div id="adminOption-container" class="deletebtn-container">
+                <button class="btn btn-primary" type="button" id="btnDelete" name="btnDelete" data-bind="visible: IsAdmin() ,click: deleteQuestion.bind($data, Id())" lang="BtnDelete">
+                    Delete</button>
+            </div>
+            <!--/ko-->
+
+            <div class="dtl-qus clearfix mb20 ">
+                <h4 class="dtl-qus-tit" id="question-title" data-bind="text: Title"></h4>
+                <p class="h6">
+                    <span class="mr10" lang="Questioner">Questioner</span>: 
+                	<span class="up-container mr5" data-bind="attr: { UserName: UserName, aname: DisplayName, aemail: AuthorEmail, photoImgSrc: PhotoImgSrc() + '?imageView2/2/w/30/h/30' }"></span>
+					{{if .username}}
+					<!--
+                    <button type="button" class="btn btn-primary btn-sm btnFollow mr10" data-bind="attr: { title: IsFollowed() ? dict['CancelFollow'] : dict['Follow'] }, click: followUser.bind($data, UserName(), IsFollowed()), visible: !IsAuthor(), text: IsFollowed() ? '－' : '＋'">
+                    </button>
+					-->
+					{{end}}
+                    <!--span class="btnFollow" data-bind="click:followUser.bind($data,UserName())">+</span-->
+                    <span data-bind="text: CreateDate().replace('T', ' ').replace('Z', '')"></span>
+                </p>
+                <ul class="tag-list clearfix" data-bind="foreach: Tags().trimStr(',').split(',')">
+                    <li><a data-bind="text: $data, attr: { href: '/tags/tagquestion?title=' + $data }"></a></li>
+                </ul>
+                <div class="dtl-dis h5 ques-ext" data-bind="html: QuestionContent"></div>
+                <p class="rig clearfix">
+				{{if .username}}
+                    <button type="button" class="btn btn-default btn-xs btns mr5" id="btnFavoriteQuestion" data-bind="click: favoriteQuestion.bind($data, $data.Id())" lang="BtnFavorite">
+                        Favorite</button>
+                    <button type="button" class="btn btn-default btn-xs btnf" id="btnShare" onclick="shareQuestion();" lang="BtnShare">
+                        Share</button>
+				{{end}}
+
+                </p>
+                <div class="modal fade" id="dlgShare" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close"
+                                    data-dismiss="modal" aria-hidden="true">
+                                    ×
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel" lang="Share Question">
+								Share Question
+                                </h4>
+                                <h6 lang="Copy URL to share">Copy URL to share
+                                </h6>
+                            </div>
+                            <textarea id="shareUrl" rows="5" style="width: 100%"></textarea>
+                            <!--div class="modal-footer">
+					            <button type="button" class="btn btn-default" 
+					               data-dismiss="modal">Close
+					            </button>
+					         </div-->
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal -->
+                </div>
+            </div>
+            <!--question end-->
+        </div>
+        <div class="dtl" id="answers-container">
+            <!--left begin-->
+
+            <div class="dtl-ans mb20">
+                <!--answer begin-->
+                <h4 class="dtl-ans-tit mb10"><span data-bind="text: total" class="mr5"></span><span data-bind="text: GetPlural('answer', total())"></span></h4>
+                <!--<h4 class="dtl-ans0">0个答案</h4> -->
+				
+                <ul class="ans-lis clearfix" id="answerListGrid" data-bind="foreach: items">
+                    <li class="clearfix">
+                        <p class="clearfix">
+                            <span class="up-container mr5" data-bind="attr: { UserName: UserName(), aname: DisplayName(), aemail: AuthorEmail(), photoImgSrc: PhotoImgSrc() + '?imageView2/2/w/30/h/30' }"></span>
+                            {{if .username}}
+							<!--
+							<button type="button" class="btn btn-primary btn-sm btnFollow mr10" data-bind="attr: { title: IsFollowed() ? dict['CancelFollow'] : dict['Follow'] }, click: followUser.bind($data, UserName(), IsFollowed()), visible: !IsAuthor(), text: IsFollowed() ? '－' : '＋'">
+                            </button>-->
+							{{end}}
+                            <!--span class="btnFollow mr10" data-bind="click:followUser.bind($data,UserName())">+</span-->
+                            <span class="h6 mr20" data-bind="text: CreateDate().replace('T', ' ').replace('Z', '')"></span>
+                            <span class="btn btn-default btn-xs btnr mr5" lang="Best Answer" data-bind="visible: IsBest(), text: dict['Best Answer']"></span>
+                            <span class="btn btn-default btn-xs btnr mr5" data-bind="visible: IsExpert(), text: dict['Expert Certification']" lang="Expert Certification"></span>
+                        </p>
+                        <div class="dtl-dis h5 answer-ext" data-bind="html: AnswerContent()"></div>
+						{{if .username}}
+                        <p class="rig clearfix">
+                            <button type="button" class="btn btn-default btn-xs mr5 btnBest" id="btnBest" data-bind="click: bestAnswer.bind($data, Id(), $parent), visible: !IsBest() & CanBest() & IsAuthor(), text: dict['BtnBest']" lang="BtnBest">
+                                Set to Best</button>
+                            <button type="button" class="btn btn-default btn-xs mr5 btnExpert" id="btnExpert" data-bind="click: expertAnswer.bind($data, Id(), $parent), visible: !IsExpert() & (IsModerator() | IsAdmin()), text: dict['BtnExpert']" lang="BtnExpert">
+                                Set to Expert</button>
+                            <button type="button" class="btn btn-default btn-xs mr5 btns" id="btnFavoriteAnswer" data-bind="click: favoriteAnswer.bind($data, Id())" lang="BtnFavorite">
+                                Favorite</button>
+                            <button type="button" class="btn btn-default btn-xs btnz" id="btnVote" data-bind="click: voteAnswer.bind($data, Id()), text: VotedCount()"></button>
+                        </p>
+						{{end}}
+                    </li>
+                </ul>
+            </div>
+            <!--answer end-->
+            <div class="qlist">
+                <div data-bind="template: 'tplPagging'"></div>
+            </div>
+        </div>
+        <div class="dtl" >
+			{{if .username}}
+	            <div class="dtl-toans mb30">
+	                <!--To answer begin-->
+	                <h4 class="dtl-toans-tit mb10" lang="Your Answer">Your Answer</h4>
+	                <textarea class="form-control mb10" id="myAnswer" name="myAnswer" rows="15" cols="100"></textarea>
+	                
+					<button type="button" class="btn btn-primary mr10" id="btnSubmit"  onclick="submitAnswer()" lang="BtnSubmit">
+	                    Submit</button>
+	                <button type="button" class="btn btn-default" lang="BtnCancel" onclick="window.location='/';">
+	                    Cancel</button>
+					
+	            </div>
+			{{end}}
+            <!--To answer end-->
+            <div class="dtl-noans">
+                <!--Don't have the right answer begin-->
+                <p>
+                    <span lang="AnswerDescription1">AnswerDescription1</span><a name="addTags" id="addTags"></a><span lang="AnswerDescription2">AnswerDescription2</span><a class="btn btn-default btn-xs btn-toans" href="/question/add" lang="SubmitYourQuestion">SubmitYourQuestion</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script type="text/javascript" src="/static/js/jquery-ui-1.10.3.min.js"></script>
+
+    <script type="text/javascript" src="/static/js/paginationViewModel.js"></script>
+    <script type="text/javascript" src="/static/js/cowork.community.questions.js"></script>
+    <script type="text/javascript" src="/static/js/cowork.community.answers.js"></script>
+    <script type="text/javascript" src="/static/js/cowork.community.users.js"></script>
+    <script src="/static/js/cowork.community.miscellaneous.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/static/js/viewquestion.js"></script>
+
+    <script type="text/javascript" src="/static/js/wysihtml5-0.3.0.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-wysihtml5.js"></script>
+    <script type="text/javascript">
+		//var id = getQueryString("qid");
+		var url = window.location.href
+		if (url.indexOf("?") > -1){
+			url = url.substring(0, url.indexOf("?"))
+		}
+		var id = url.substring(url.lastIndexOf("/") + 1)
+        if (id == null || id == "") {
+            $("#content-container").html('');
+        }
+        else {
+			startWaiting();
+        }
+			
+		$(function () {
+        	//$("#loading").show();
+            Miscellaneous.getFixedCount(bindFixedCount);
+	        Questions.viewQuestion(id, bindData);
+			Tags.GetTagsPage("hottags",20);
+        });
+     	//！！！！！！！！！！！！！！！
+     	//为了解决ckeditor绑定不显示的问题，故挪到Answers.bindAnswers 中进行初始化
+     	//！！！！！！！！！！！！！！！
+
+    </script>
+{{end}}
+
+{{define "RightTop"}}
+	<div class="rigp scch mb20">
+        <p class="mc tc mb20">
+            <span lang="Questions already fixed">Questions already fixed </span>
+            <br />
+            <span class="h1 hc tc" id="fixedQuestionCount"></span>
+        </p>
+        <div class="searchq form-group">
+            <ul class="tag-list clearfix mb0">
+                <li>
+                    <input type="text" id="searchBox" class="form-control sword" placeholder="Search questions..." onkeypress="goToSearchResult(this);" />
+                    <img class="srchimg" src="/static/images/index/search.png" onclick="onSearch(document.getElementById('searchBox'));" />
+                </li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            $("#searchBox").attr("placeholder", dict["PromptInput"]);
+        </script>
+
+        <button type="button" class="btn btn-success btn-block mb20" onclick="window.location.href='/question/add';"><span class="mc" lang="I want to ask">I want to ask</span></button>
+    </div>
+{{end}}
+
+{{define "RightSide"}}
+	<div class="rigp ind-tags mb20" id="hottags">
+        <h4 class="clearfix"><a data-bind="attr: { href: '/tags' }" lang="Tags">Tags</a></h4>
+        <ul class="tag-list clearfix" data-bind="foreach: items">
+            <li>
+                <a data-bind="attr: { href: '/tags/tagquestion?title=' + encodeURIComponent(TagName())}, text: TagName"></a>
+            </li>
+
+            <!--ko if:$index() == $root.items().length-1 -->
+            <li data-bind="if: $index() == $root.items().length-1"><a class="a1" data-bind="text: dict['Show More'], attr: { href: '/tags' }"></a></li>
+			<!--/ko-->
+        </ul>
+    </div>
+    <!--The latest end-->
+{{end}}

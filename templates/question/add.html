@@ -1,0 +1,121 @@
+{{define "Title"}}提问{{end}}
+{{define "Header"}}
+{{end}}
+{{define "Content"}}
+	<h3 class=" lislef-tit mb0" lang="Ask Question">
+	Ask Question</h3>
+    <div class="askq form-group">
+        <label class="control-label" lang="Describe your question">Describe your 
+		question</label>
+        <ul class="tag-list clearfix mb0 span-ext" id="checkedTags">
+          <li style="width:100%;">
+          	<input id="txtTitle" type="text" name="sumdis" onchange="recommendTags(this);" class="form-control" placeholder="Describe your question, less than 200 char..." />
+          	<div style="margin-top:10px;">
+	        	<select id="langselect" data-bind="">
+	        		<option value="en" lang="English">
+	        			
+	        		</option>
+					<option value="cn" lang="Chinese">
+	        			
+	        		</option>
+	        	</select>
+           	</div>
+           	<script type="text/javascript">
+           		$("#txtTitle").attr("placeholder",dict["Describe your question"]);
+           	</script>
+          </li> 
+        </ul> 
+        <label class="control-label" lang="Question Content" >Question Content</label>
+        <textarea name="editor01" id="editor01" class="form-control" style="margin-bottom:10px;" rows="10"></textarea>
+        <ul class="tag-list clearfix mb0" id="checkedTags">
+          <li id="lastTag">
+          <input type="text" id="inputTag" class="form-control sword" placeholder="Search tags" onkeypress="keyPress(event)" onkeyup="keyUp(this);" />
+          <script type="text/javascript">
+           		$("#inputTag").attr("placeholder",dict["Search tags"]);
+           	</script>
+
+          </li>  
+        </ul>  
+        <input type="hidden" id="hiddenTags" /> 
+        <div class="checkbox" style="vertical-align:middle;">
+            <input type="checkbox" id="ckEmailNotice" style="vertical-align:middle;" checked="checked"/>
+            <label class="control-label" for="ckEmailNotice" lang="Email Notice" style="vertical-align:middle;">
+			Email Notice</label>
+		</div>
+		<button type="button" class="btn btn-primary mr10" id="btnSubmit" value="BtnSubmit" onclick="return submitQuestion();" lang="BtnSubmit"></button>
+		<button type="button" class="btn btn-default" id="btnCancel" value="BtnCancel" onclick="window.location='/';return false;" lang="BtnCancel"></button>
+ 	</div>
+	<script type="text/javascript" src="/static/ckeditor/ckeditor.js?v=1"></script>
+	<script type="text/javascript" src="/static/ckeditor/adapters/jquery.js"></script>
+    <script src="/static/js/paginationViewModel.js" type="text/javascript"></script>
+	<script src="/static/js/cowork.community.questions.js" type="text/javascript"></script>
+	<script src="/static/js/cowork.community.miscellaneous.js" type="text/javascript"></script>
+	<script src="/static/js/newquestion.js" type="text/javascript"></script>
+	<script src="/static/js/promise-0.1.1.min.js" type="text/javascript"></script>
+	<link type="text/css" href="/static/css/jquery.autocomplete.css" rel="stylesheet"  />
+
+
+
+
+<script src="/static/js/wysihtml5-0.3.0.min.js"></script>
+<script src="/static/js/bootstrap-wysihtml5.js"></script>
+    <script type="text/javascript">
+		$(function () {
+			Tags.GetTagsPage("hottags",20);
+	        Miscellaneous.getFixedCount(bindFixedCount);
+	        setSelectValue();
+	        CKEDITOR.replace("editor01");
+	        //CKEDITOR.config.extraPlugins = "dragdrop,imagepaste";//dragdrop,imagepaste,imageresize,blockimagepaste
+		    //CKEDITOR.config.imageResize = true;
+        });
+		$("#txtTitle").maxlength(200);
+        $("#inputTag").autocomplete(CCConfig.L_Menu_BaseUrl + '/ajax/tags?op=filtertag');
+        //$('#editor01').ckeditor();
+        
+        function setSelectValue(){
+        	if(CCConfig.SiteLanguage == "en")
+        		$("#langselect").val("en")
+        	else
+        		$("#langselect").val("cn")
+        }
+    </script>
+{{end}}
+
+{{define "RightTop"}}
+	<div class="rigp scch mb20">
+        <p class="mc tc mb20">
+            <span lang="Questions already fixed">Questions already fixed </span>
+            <br />
+            <span class="h1 hc tc" id="fixedQuestionCount"></span>
+        </p>
+        <div class="searchq form-group">
+            <ul class="tag-list clearfix mb0">
+                <li>
+                    <input type="text" id="searchBox" class="form-control sword" placeholder="Search questions..." onkeypress="goToSearchResult(this);" />
+                    <img class="srchimg" src="/static/images/index/search.png" onclick="onSearch(document.getElementById('searchBox'));" />
+                </li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            $("#searchBox").attr("placeholder", dict["PromptInput"]);
+        </script>
+
+        <button type="button" class="btn btn-success btn-block mb20" onclick="window.location.href='/question/add';"><span class="mc" lang="I want to ask">I want to ask</span></button>
+    </div>
+{{end}}
+
+{{define "RightSide"}}
+	<div class="rigp ind-tags mb20" id="hottags">
+        <h4 class="clearfix"><a data-bind="attr: { href: '/tags' }" lang="Tags">Tags</a></h4>
+        <ul class="tag-list clearfix" data-bind="foreach: items">
+            <li>
+                <a data-bind="attr: { href: '/tags/tagquestion?title=' + encodeURIComponent(TagName())}, text: TagName"></a>
+            </li>
+
+            <!--ko if:$index() == $root.items().length-1 -->
+            <li data-bind="if: $index() == $root.items().length-1"><a class="a1" data-bind="text: dict['Show More'], attr: { href: '/tags' }"></a></li>
+			<!--/ko-->
+        </ul>
+    </div>
+    <!--The latest end-->
+{{end}}

@@ -1,0 +1,128 @@
+{{define "Title"}}{{.user.Base.DisplayName}}{{end}}
+{{define "Header"}}{{end}}
+{{define "Content"}}
+	{{$user := .userinfo.Base}}
+	{{$statistic := .userinfo.Statistic}}
+    <div class="mb10"></div>
+    <div class="ind-topqstion" id="questionpage">
+    	<div class="prncon clearfix" id="statistics">
+            <ul class="clearfix mb15">
+                <li class="clearfix">
+                    <a href="#" class="pull-left mr30" style="overflow:hidden;width:100px;">
+                        <img alt="" class="user-photo" src="{{$user.PhotoImgSrc}}">
+                    </a>
+					<div class="media-body media-body-ext">
+                        
+                        <h4 class="text-primary mb20 mr20" style="display:inline-block" data-bind="">{{$user.DisplayName}}</h4>
+					{{if .username}}
+						{{if .userinfo.IsFollowed}}
+		                    <button type="button" class="btn btn-primary btn-sm btnFollow mr10" onclick="followUser({{$user.Username}}, true)">－
+		                    </button>
+						{{else}}
+							<button type="button" class="btn btn-primary btn-sm btnFollow mr10" onclick="followUser({{$user.Username}}, false)">＋
+		                    </button>
+						{{end}}
+					{{end}}
+                        <ul class="qus-num qs-num-ext">
+                            <li><a data-bind="css:CSSByNum($statistic.FavoriteCount)"><span class="statistic-num" data-bind="text:FavoriteCount.Currency()">{{$statistic.FavoriteCount}}</span><h5 lang="MyFavorite">
+							Favorite</h5></a></li>
+                            <li><a data-bind="css:CSSByNum(VotedCount)"><span class="statistic-num" data-bind="text:VotedCount.Currency()">{{$statistic.VotedCount}}</span><h5 lang="MyVote">
+							Vote</h5></a></li>
+                            <li><a data-bind="css:CSSByNum(BestCount)"><span class="statistic-num" data-bind="text:BestCount.Currency()">{{$statistic.BestCount}}</span><h5 lang="MyBest">
+							Best</h5></a></li>
+							<li><a data-bind="css:CSSByNum(ExpertCount)"><span class="statistic-num" data-bind="text:ExpertCount.Currency()">{{$statistic.ExpertCount}}</span><h5 lang="MyExpert">
+							Expert</h5></a></li>
+                            <li><a data-bind="css:CSSByNum(TagsCount)"><span class="statistic-num" data-bind="text:TagsCount.Currency()">{{$statistic.TagsCount}}</span><h5 lang="MyTag">
+							Tags</h5></a></li>
+                            <li><a data-bind="css:CSSByNum(ViewCount)"><span class="statistic-num" data-bind="text:ViewCount.Currency()">{{$statistic.ViewCount}}</span><h5 lang="MyView">
+							View</h5></a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    	<h3 class="lislef-tit lisschtit mb0"></h3>
+        <div class="content">
+	 			<h4 class="clearfix" lang="Last questions">Last questions</h4>
+		        <div class="mb30">
+		            <div class="" id="con_myques">
+		                <div data-bind="template: 'qcontent'"></div>
+		                <div data-bind="template: 'tplPagging'"></div>
+		            </div>
+		        </div>				
+		</div>
+    </div>
+	<script src="/static/js/cowork.community.users.js" type="text/javascript"></script>
+	<script src="/static/js/cowork.community.miscellaneous.js" type="text/javascript"></script>
+    <script src="/static/js/cowork.community.questions.js" type="text/javascript"></script>
+	<script type="text/javascript">
+        $(function () {
+			$(".statistic-num").each(function(){
+				num = $(this).html().trim()
+				$(this).html(num.Currency())
+				$(this).parent().addClass(CSSByNum(num))
+			})
+
+			Tags.GetTagsPage("hottags",20);
+            Miscellaneous.getFixedCount(bindFixedCount);
+			Questions.getQuesForMyPage("con_myques", "my");
+        });
+
+		function followUser(userName,isFollowed) {
+		    Users.followUser(userName,isFollowed, function (msg) {
+				ccAlert(msg);
+				
+				if(msg.toLowerCase().indexOf("success") > -1 || msg == "HadFollowedUser" ||  msg == "NotFollowing"){
+					vm.IsFollowed(!isFollowed);
+					$.each(Answers.answerViewModel.items(), function (it) {
+						if(this.UserName() == userName){
+							this.IsFollowed(!isFollowed);
+						}
+			        });
+					if(viewQuestionModel.UserName() == userName){
+						viewQuestionModel.IsFollowed(!isFollowed);
+					}
+				}
+		    });
+		}
+    </script>
+{{end}}
+
+{{define "RightTop"}}
+	<div class="rigp scch mb20">
+        <p class="mc tc mb20">
+            <span lang="Questions already fixed">Questions already fixed </span>
+            <br />
+            <span class="h1 hc tc" id="fixedQuestionCount"></span>
+        </p>
+        <div class="searchq form-group">
+            <ul class="tag-list clearfix mb0">
+                <li>
+                    <input type="text" id="searchBox" class="form-control sword" placeholder="Search questions..." onkeypress="goToSearchResult(this);" />
+                    <img class="srchimg" src="/static/images/index/search.png" onclick="onSearch(document.getElementById('searchBox'));" />
+                </li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            $("#searchBox").attr("placeholder", dict["PromptInput"]);
+        </script>
+
+        <button type="button" class="btn btn-success btn-block mb20" onclick="window.location.href='/question/add';"><span class="mc" lang="I want to ask">I want to ask</span></button>
+    </div>
+{{end}}
+
+{{define "RightSide"}}
+	<div class="rigp ind-tags mb20" id="hottags">
+        <h4 class="clearfix"><a data-bind="attr: { href: '/tags' }" lang="Tags">Tags</a></h4>
+        <ul class="tag-list clearfix" data-bind="foreach: items">
+            <li>
+                <a data-bind="attr: { href: '/tags/tagquestion?title=' + encodeURIComponent(TagName())}, text: TagName"></a>
+            </li>
+
+            <!--ko if:$index() == $root.items().length-1 -->
+            <li data-bind="if: $index() == $root.items().length-1"><a class="a1" data-bind="text: dict['Show More'], attr: { href: '/tags' }"></a></li>
+			<!--/ko-->
+        </ul>
+    </div>
+    <!--The latest end-->
+{{end}}

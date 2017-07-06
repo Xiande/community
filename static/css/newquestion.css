@@ -1,0 +1,10 @@
+﻿#sideNavBox,s4-titlerow{
+
+    display:none;
+}
+#contentBox{
+		margin-left:20px;
+}
+.questionContainer{
+	min-width:800px;
+}

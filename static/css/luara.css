@@ -1,0 +1,20 @@
+﻿
+.luara-{position:relative;padding:0;overflow: hidden;}
+.luara- ul{padding: inherit;margin: 0;}
+.luara- ul li{display: none;padding: inherit;margin: inherit;list-style: none;}
+.luara- ul li:first-child{display:block;}
+.luara- ul li img{width: inherit;height: inherit;}
+
+
+
+.example ul,.example li,.example ol,.example img{margin: 0;padding: 0;}
+.example li{list-style: none;}
+.example ol{position:relative;width: 120px;height: 20px;top:-20px;left:65%;}
+.example ol li{float:left;width: 10px;height: 10px;margin: 5px;background: #fff;}
+.example ol li.seleted{background: #1AA4CA;}
+
+
+
+
+
+

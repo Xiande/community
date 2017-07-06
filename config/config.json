@@ -1,0 +1,18 @@
+{
+	"host": "http://localhost:8888",
+	"port": 8888,
+	"db":"mysql",
+	"db_conn":"root:Pass@word!@tcp(localhost:3306)/community?charset=utf8",
+	"cookie_secret": "05e0ba2eca9411e18155109add4b8aac",
+	"smtp_username": "username@example.com",
+	"smtp_password": "password",
+	"smtp_host": "smtp.example.com",
+	"smtp_addr": "smtp.example.com:25",
+	"from_email": "who@example.com",
+	"superusers": "admin",
+	"analytics_file": "",
+	"qiniu_access_key": "UY1crWGZD6u94QGSqnd6tDLF_v7gYdZIdIISEjzZ",
+	"qiniu_secret_key": "5L75Qx1Heh7Atl5iwWWOp5DSR8j84dAwerU4TSnx",
+	"time_zone_offset": 8,
+	"static_file_version": 1
+}

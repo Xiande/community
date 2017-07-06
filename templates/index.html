@@ -1,0 +1,163 @@
+{{define "Title"}}首页{{end}}
+{{define "Header"}}
+<link href="/static/css/luara.css" rel="stylesheet" />
+	<div class="width100p topimg">
+        <div class="example">
+        <ul>
+            <li><img src="/static/images/index/topimg.jpg" alt="1" /></li>
+            <li><img src="/static/images/index/topimg2.jpg" alt="2" /></li>
+        </ul>
+        <ol>
+            <li></li>
+            <li></li>
+        </ol>
+    </div>
+        <div class="topimg-con">
+            <div class=" topimg-con-right col-md-3 top-search top-search-ext">
+                <br>                
+                <p class="mc mt5 tc" lang="Questions already fixed">已解决问题数量</p>
+                <h1 class="mt5 hc tc" id="fixedQuestionCount"></h1>
+                <br>
+                <br>
+                <div class="searchq form-group">
+                    <ul class="tag-list clearfix mb0">
+                        <li>
+                            <input type="text" id="searchBox" class="form-control sword" placeholder="Search questions..." onkeypress="goToSearchResult(this);">
+                            <img class="srchimg" src="/static/images/index/search.png" onclick="onSearch(document.getElementById('searchBox'));">
+                        </li>
+                    </ul>
+                </div>
+                <button type="button" class="btn btn-success btn-block" onclick="location.href = '/question/add';"><span class="mc" lang="I want to ask">
+				我要提问</span></button>
+				<script type="text/javascript">
+					$("#searchBox").attr("placeholder",dict["PromptInput"]);
+				</script>
+            </div>
+        </div>
+    </div>
+{{end}}
+{{define "Content"}}
+	<!--index left begin-->
+    <div class="ind-tags" id="hottags">
+        <!--tags begin-->
+        <h3 class="ind-tagstit mb20" lang="Tags">Tags</h3>
+        <ul class="tag-list clearfix" data-bind="foreach: items" >
+            <li>
+                <a data-bind="attr: { href: '/tags/tagquestion?title=' + encodeURIComponent(TagName())}, text: TagName"></a>
+            </li>
+            <!--ko if: $index()==$root.items().length-1 -->
+            	<li data-bind="if: $index() == $root.items().length-1"><a class="a1" data-bind="text:dict['Show More'],attr:{href:'/tags'}"></a></li>
+		 	<!--/ko-->
+        </ul>
+    </div>
+    <!--tags end-->
+    <div class="mb10"></div>
+    <div class="ind-topqstion" id="questionpage">
+        <!--top question begin-->
+        <h3 class="ind-topqstit mb0"><span lang="Top Question">Top Question</span>
+        	<span class="floatr">
+	        	<select class="langfilter" id="langselect" data-bind="options:LangList,optionsText:'langName',optionsValue:'langValue',value: SelectedLang,event: { change:langChanged}">
+	        	</select>
+	            <button type="button" class="btn btn-default btn-xs" id="refreshQuestion">
+	            <img data-bind="attr:{src:loading()?'/static/images/index/loading.gif':'/static/images/index/ind-ref.png'}" width="14" height="13">
+	            <span lang="Refresh">Refresh</span></button>
+            </span>
+        </h3>
+			
+        <ul class="nav nav-tabs">
+            <!-- Nav tabs begin-->
+            <li class="active"><a data-toggle="tab" data-bind="click: Sort.bind($data, 'CreateDate')"><strong lang="New">
+			New</strong></a></li>
+            <li><a data-toggle="tab" data-bind="click: Sort.bind($data, 'AnswersCount')"><strong lang="Hot">
+			Hot</strong></a></li>
+            <li><a data-toggle="tab" data-bind="click: Sort.bind($data, 'Expert')"><strong lang="Expert">
+			Expert</strong></a></li>
+            <li><a data-toggle="tab" data-bind="click: Sort.bind($data, 'NoneAnswer')"><strong lang="Unanswer">
+			Unanswer</strong></a></li>
+			
+        </ul>
+        <!-- Nav tabs end-->
+        <div class="tab-content mb30">
+            <!-- Tab pane1 begin-->
+            <div class="tab-pane active" id="hot">
+				 <div data-bind="template: 'qcontent'"></div>                
+            </div>
+        </div>
+    </div>
+    <!--top question end-->
+    <script src="/static/js/paginationViewModel.js" type="text/javascript"></script>
+	<script src="/static/js/cowork.community.questions.js" type="text/javascript"></script>
+	<script src="/static/js/cowork.community.miscellaneous.js" type="text/javascript"></script>
+	<script src="/static/js/jquery.luara.min.js" type="text/javascript"></script>
+	
+    <script type="text/javascript">
+		$(function () {
+			$(".homeactive").addClass("active");
+			Tags.GetTagsPage("hottags",30);
+		    Questions.getQuestionPage("questionpage");
+		    //Miscellaneous.GetPopularSite("popularsite");
+		    Questions.GetTopDynamic("TopDynamic");
+	        Miscellaneous.getFixedCount(bindFixedCount);
+	        Miscellaneous.getStarUser("staruser");
+        });
+        $(".example").luara({width:"100%",height:"350",interval:4000,selected:"seleted"});        
+    </script>
+{{end}}
+
+{{define "RightTop"}}
+
+{{end}}
+
+{{define "RightSide"}}
+	<div id="staruser" class="ind-staruser ind-rigp mb20">
+        <!--Star User begin-->
+        <h4 class="clearfix"><span lang="Star User">Star User</span>
+            <!--
+			<button type="button" class="btn btn-primary " onclick="joinStarUser();"><span lang="Join us">
+			Join us</span>
+                <img src="/static/images/index/arr-rig.png" width="6" height="11"></button>
+			-->
+		</h4>
+        <p class="user-major clearfix">
+            <a  class="pull-left mr10">
+                <img alt="" data-bind="attr:{src:PhotoUrl}" class="media-object">
+            </a><a class="h4 text-primary" data-bind="text:UserName"></a></p>
+        <p class="user-summary" data-bind="text:Description"></p>
+
+    </div>
+    <!--Star User end-->
+
+    
+    <div class="ind-latest ind-rigp mb20" id="TopDynamic">
+        <!--The latest begin-->
+        <h4 class="clearfix" lang="you followed person dynamic">you followed 
+		person dynamic</h4>
+        <ul data-bind="foreach: items">
+            <li class="clearfix">
+                <a class="pull-left mr10" data-bind="attr:{href:'/member/' + UserName}">
+                    <img alt="" data-bind="attr: { src: Photo }" class="media-object">
+                </a>
+				
+				<div class="media-body">
+                    <a class="text-primary" data-bind="attr:{href:'/member/' + UserName},text: DisplayName"></a>
+                    <p class="h6 p1">
+	                    <a class="follow-q-title q-title" class="pull-left mr10" data-bind="attr: { href: '/question/' + Id},text: Title">
+	                    </a>
+	                </p>
+	                <p class="h6 p2" data-bind="text: CreateDate.replace('T',' ').replace('Z', '')"></p>
+                </div>
+                
+            </li>
+        </ul>
+        <button type="button" class="btn btn-primary mt10" onclick="window.location.href= '/mypersonal?stype=myfollow';">
+            <img src="/static/images/index/load.png" width="17" height="17"><span lang="Show More"></span></button>
+    </div>
+    <script>
+    	
+    
+    	function joinStarUser(){
+    		window.location = CCConfig.L_Menu_BaseUrl + "/Lists/Key%20User/Item/newifs.aspx?Source=" + window.location;
+    	}
+    </script>
+    <!--The latest end-->
+{{end}}
